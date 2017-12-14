@@ -88,7 +88,7 @@ if startBool:
             fileInstanceStagingArea.append(establishedChild)
             establishedChild.displayAllInfo()
             # ADD LATER: link grandparent files if there are any
-            file_parents.append(child_uID)
+            file_children.append(child_uID)
             childLinkingBool = messagebox.askyesno("FileLink: Add Children Question",
                                                     "Are there additional child files to link?")
     else:
