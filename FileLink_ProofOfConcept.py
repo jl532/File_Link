@@ -18,16 +18,16 @@ class FileInstance:
         # currently just using -99 for missing values
         print("File Name: " + str(self.fileName) +
               " | File Path: " + str(self.filePath) +
+              " | uID: " + str(self.ID) +
               " | Parents: " + str(self.parents) + 
-              " | Children: " + str(self.children) +
-              " | Siblings: " + str(self.siblings) )
+              " | Children: " + str(self.children) )
 
 def fileNameFinder(directory):
     locationOfLastSlash = 0
     for iterChars in range(len(directory)):
-        if iterChars == "/":
+        if directory[iterChars] == "/":
             locationOfLastSlash = iterChars
-    return directory[locationOfLastSlash:]
+    return directory[(locationOfLastSlash+1):]
 
 root = tk.Tk()
 root.withdraw()
@@ -48,6 +48,7 @@ if startBool:
     
     parentLinkingBool = messagebox.askyesno("FileLink: Meet the Parents",
                                             "Are there any parent files to link?")
+    file_parents = []
     if parentLinkingBool:
         parentCounter = 0
         while parentLinkingBool:
@@ -60,12 +61,40 @@ if startBool:
             # for now leave as is and assume it's new
             parent_uID = uuid.uuid1()
             establishedParent = FileInstance(parent_file_name, parent_file_path, parent_uID, -99, file_uID)
+            establishedParent.displayAllInfo()
             fileInstanceStagingArea.append(establishedParent)
             # ADD LATER: link grandparent files if there are any
             file_parents.append(parent_uID)
             parentLinkingBool = messagebox.askyesno("FileLink: Meet the Parents",
-                                                    "Are there any more parent files to link?")
+                                                    "Are there additional parent files to link?")
     else:
         file_parents.append(-99)
-        
-    # loop to identify parents
+
+    childLinkingBool = messagebox.askyesno("FileLink: Add Children Question",
+                                            "Are there any child files to link?")
+    file_children = []
+    if childLinkingBool:
+        childCounter = 0
+        while childLinkingBool:
+            childCounter = childCounter + 1
+            print("Link child file number " + str(childCounter) + ", please")
+            # currently assuming child files are fresh
+            child_file_path = str(filedialog.askopenfilename())
+            child_file_name = fileNameFinder(child_file_path)
+            # ADD LATER: check to see if file already exists,
+            # for now leave as is and assume it's new
+            child_uID = uuid.uuid1()
+            establishedChild = FileInstance(child_file_name, child_file_path, child_uID, -99, file_uID)
+            fileInstanceStagingArea.append(establishedChild)
+            establishedChild.displayAllInfo()
+            # ADD LATER: link grandparent files if there are any
+            file_parents.append(child_uID)
+            childLinkingBool = messagebox.askyesno("FileLink: Add Children Question",
+                                                    "Are there additional child files to link?")
+    else:
+        file_children.append(-99)
+
+    # establish initial node with all given information: file name, file path, file uID, parents and children
+    establishNode = FileInstance(file_name, file_path, file_uID, file_parents, file_children)
+    establishNode.displayAllInfo()
+    
