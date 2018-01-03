@@ -25,9 +25,10 @@ class FileInstance:
 
 def fileNameFinder(directory):
     locationOfLastSlash = 0
-    for iterChars in range(len(directory)):
+    for iterChars in reversed(range(len(directory))):
         if directory[iterChars] == "/":
             locationOfLastSlash = iterChars
+            break
     return directory[(locationOfLastSlash+1):]
 
 #def nodeGenerator(graphStructure, nodeCount, filename, 

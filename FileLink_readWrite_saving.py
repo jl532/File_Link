@@ -41,11 +41,6 @@ def fileNameFinder(directory):
 #    nodeCount = nodeCount + 1
 #    return [graphStructure, nodeCount]
     
-    
-
-root = tk.Tk()
-root.withdraw()
-
 ##file_path = filedialog.askopenfilename()
 ##print(file_path)
 
